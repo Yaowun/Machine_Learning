@@ -5,8 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers.convolutional import Conv2D, MaxPooling2D
-from tensorflow.keras.utils import np_utils
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.python.keras.utils.np_utils import to_categorical
 from tensorflow.keras.datasets import mnist
 
 
@@ -14,22 +14,22 @@ from tensorflow.keras.datasets import mnist
 (data_train_x, data_train_y), (data_test_x, data_test_y) = mnist.load_data()
 data_train_x = data_train_x.reshape(60000, 28, 28, 1)/255
 data_test_x = data_test_x.reshape(10000, 28, 28, 1)/255
-data_train_y = np_utils.to_categorical(data_train_y)
-data_test_y = np_utils.to_categorical(data_test_y)
-model_name = "model_1"
+data_train_y = to_categorical(data_train_y)
+data_test_y = to_categorical(data_test_y)
+model_name = "model"
 
 # file check
-if not os.path.isdir("model"):
-    os.mkdir("model")
-if os.path.isdir("model/" + model_name):
+if not os.path.isdir(model_name):
+    os.mkdir(model_name)
+else:
     choice = input("Swap file '" + model_name + "' already exists!\n" 
                    "(U)se it, (O)verride it, (Q)uit:\n").lower()
     while True:
         if choice in "use":
             new_train = False
             save_model = False
-            model = load_model("model/" + model_name)
-            with open("model/" + model_name + "/history.pkl", "rb") as df:
+            model = load_model(model_name)
+            with open(model_name + "/history.pkl", "rb") as df:
                 hist_df = pickle.load(df)
             break
         if choice in "override":
@@ -71,15 +71,23 @@ if new_train:
                         validation_split=0.1)
 
 if save_model:
-    model.save("model/" + model_name)
+    model.save(model_name)
     hist_df = pd.DataFrame(history.history)
-    with open("model/" + model_name + "/history.pkl", "wb") as df:
+    with open(model_name + "/history.pkl", "wb") as df:
         pickle.dump(hist_df, df)
+
+#%% example
+fig = plt.figure(figsize=(5, 5))
+plt.imshow(data_test_x[0], cmap='Greys')
+fig.savefig(f"fig/{model_name}/number_example.png", bbox_inches="tight")
+predict = model.predict(data_test_x)
+print("Probability:\n", predict[0])
+print("Predicted number is:", predict[0].argmax())
 
 #%% evaluate model
 score = model.evaluate(data_test_x, data_test_y, verbose=0)
-print("Test loss: ", score[0])
-print("Test accuracy: ", score[1])
+print("Loss: {:.3f}".format(score[0]))
+print("Accuracy: {:.2f}".format(score[1]*100)+" %")
 fig = plt.figure(figsize=(12, 8))
 plt.plot(hist_df["loss"])
 plt.plot(hist_df["val_loss"])
@@ -90,5 +98,4 @@ plt.yticks(fontsize=22)
 plt.xticks(fontsize=22)
 plt.legend(["train", "validation"], fontsize=22)
 plt.show()
-fig.savefig(f"model/{model_name}/train_history.png", bbox_inches="tight")
-
+fig.savefig(f"fig/{model_name}/train_history.png", bbox_inches="tight")
