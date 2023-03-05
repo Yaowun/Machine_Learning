@@ -22,7 +22,7 @@ model_name = "model"
 if not os.path.isdir(model_name):
     os.mkdir(model_name)
 else:
-    choice = input("Swap file '" + model_name + "' already exists!\n" 
+    choice = input("Swap file '" + model_name + "' already exists!\n"
                    "(U)se it, (O)verride it, (Q)uit:\n").lower()
     while True:
         if choice in "use":
@@ -39,7 +39,7 @@ else:
         if choice in "quit":
             raise SystemExit
         else:
-            sys.stdout.write("Please respond with 'use', 'override' or 'quit' " 
+            sys.stdout.write("Please respond with 'use', 'override' or 'quit' "
                              "(or 'u','o' or 'q').\n")
 
 #%% model
@@ -56,18 +56,18 @@ if new_train:
     model.add(Dense(128, activation="relu"))
     model.add(Dropout(0.3))
     model.add(Dense(10, activation="softmax"))
-    
+
     # set model
     model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    
+
     # train model
     batch_size = 32
     epochs = 150
-    history = model.fit(data_train_x, 
-                        data_train_y, 
-                        batch_size=batch_size, 
-                        epochs=epochs, 
-                        verbose=1, 
+    history = model.fit(data_train_x,
+                        data_train_y,
+                        batch_size=batch_size,
+                        epochs=epochs,
+                        verbose=1,
                         validation_split=0.1)
 
 if save_model:
@@ -79,7 +79,7 @@ if save_model:
 #%% example
 fig = plt.figure(figsize=(5, 5))
 plt.imshow(data_test_x[0], cmap='Greys')
-fig.savefig(f"fig/{model_name}/number_example.png", bbox_inches="tight")
+fig.savefig("fig/number_example.png", bbox_inches="tight")
 predict = model.predict(data_test_x)
 print("Probability:\n", predict[0])
 print("Predicted number is:", predict[0].argmax())
@@ -98,4 +98,4 @@ plt.yticks(fontsize=22)
 plt.xticks(fontsize=22)
 plt.legend(["train", "validation"], fontsize=22)
 plt.show()
-fig.savefig(f"fig/{model_name}/train_history.png", bbox_inches="tight")
+fig.savefig("fig/train_history.png", bbox_inches="tight")
