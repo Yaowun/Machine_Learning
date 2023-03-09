@@ -14,14 +14,14 @@ Python 3.9、Tesorflow 2.11.0
 
 ## 畫面
 ### 訓練過程
-![GITHUB](./fig/train_history.png)
+![machine learning training](./fig/train_history.png)
 
 ### 範例
 以下使用 MNIST 的第 0 筆測試資料作為範例
 ``` python
 plt.imshow(data_test_x[0], cmap='Greys')
 ```
-![GITHUB](./fig/number_example.png)
+![AI digital recognition](./fig/number_example.png)
 ``` python
 predict = model.predict(data_test_x)
 print("Probability:\n", predict[0])
