@@ -12,7 +12,7 @@ Python 3.9、Tesorflow 2.11.0
   * assets - 靜態資源放置處
   * variables - 模型變數放置處
 
-## 畫面
+## 實作
 ### 訓練過程
 ![machine learning training](./fig/train_history.png)
 
