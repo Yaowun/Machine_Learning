@@ -4,7 +4,7 @@
 本專案使用 Python 程式語言，利用 Tesorflow Keras 套件對 MNIST 手寫數字進行機器學習辨識。
 
 ## 專案技術
-Python 3.9、Tesorflow 2.11.0
+Python 3.9、Tesorflow 2.11.0。
 
 ## 資料夾說明
 * fig - 圖片放置處
